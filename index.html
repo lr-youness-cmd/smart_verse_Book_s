@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Library - Premium E-Books Collection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e27;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            width: 100%;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00ffff, #0080ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 20px;
+            transition: color 0.3s;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            color: #00ffff;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .particle {
+            position: absolute;
+            background: #00ffff;
+            border-radius: 50%;
+            animation: float 6s infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0.8;
+            }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+
+        h1 {
+            font-size: 72px;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00ffff, #0080ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 20px rgba(0, 255, 255, 0.5));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 40px rgba(0, 255, 255, 0.8));
+            }
+        }
+
+        .hero p {
+            font-size: 24px;
+            margin-bottom: 40px;
+            color: #ccc;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 20px 50px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #0a0e27;
+            background: linear-gradient(45deg, #00ffff, #0080ff);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 255, 255, 0.5);
+        }
+
+        /* Library Carousel Section */
+        .library {
+            padding: 100px 20px;
+            background: linear-gradient(180deg, #0a0e27, #1a1e3f);
+        }
+
+        .library h2 {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #00ffff;
+        }
+
+        .library-subtitle {
+            text-align: center;
+            font-size: 20px;
+            color: #ccc;
+            margin-bottom: 60px;
+        }
+
+        .carousel-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+            padding: 0 80px;
+        }
+
+        .carousel-wrapper {
+            overflow: hidden;
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease;
+            gap: 40px;
+        }
+
+        .book-slide {
+            min-width: calc(33.333% - 27px);
+            perspective: 1000px;
+        }
+
+        .book-card {
+            height: 100%;
+        }
+
+        .book-card-inner {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .book-slide:hover .book-card-inner {
+            transform: rotateY(10deg) translateY(-20px);
+        }
+
+        .book-3d {
+            width: 100%;
+            height: 380px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: bookFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes bookFloat {
+
+            0%,
+            100% {
+                transform: translateY(0) rotateY(-5deg);
+            }
+
+            50% {
+                transform: translateY(-15px) rotateY(5deg);
+            }
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #0a0e27, #1a1e3f);
+            border-radius: 15px;
+            box-shadow: 0 25px 70px rgba(0, 255, 255, 0.4);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .book-cover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 100%;
+            }
+        }
+
+        .book-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00ffff;
+            text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            margin-bottom: 15px;
+            line-height: 1.3;
+            text-align: center;
+        }
+
+        .book-subtitle {
+            font-size: 14px;
+            color: #aaa;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .book-info {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .book-price {
+            font-size: 32px;
+            font-weight: bold;
+            color: #00ffff;
+            margin: 12px 0;
+        }
+
+        .book-price .old-price {
+            font-size: 18px;
+            color: #666;
+            text-decoration: line-through;
+            margin-right: 10px;
+        }
+
+        .book-button {
+            display: inline-block;
+            padding: 12px 35px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #0a0e27;
+            background: linear-gradient(45deg, #00ffff, #0080ff);
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            box-shadow: 0 8px 25px rgba(0, 255, 255, 0.3);
+        }
+
+        .book-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0, 255, 255, 0.5);
+        }
+
+        /* Coming Soon Card */
+        .coming-soon .book-cover {
+            background: linear-gradient(145deg, #1a1e3f, #0e1228);
+            border: 2px dashed rgba(0, 255, 255, 0.3);
+        }
+
+        .coming-soon .book-title {
+            color: #666;
+        }
+
+        .coming-soon-badge {
+            background: rgba(0, 255, 255, 0.2);
+            color: #00ffff;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        /* Carousel Controls */
+        .carousel-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #00ffff;
+            background: rgba(10, 14, 39, 0.9);
+            color: #00ffff;
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-control:hover {
+            background: #00ffff;
+            color: #0a0e27;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-control.prev {
+            left: 10px;
+        }
+
+        .carousel-control.next {
+            right: 10px;
+        }
+
+        /* Carousel Indicators */
+        .carousel-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(0, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .indicator.active {
+            background: #00ffff;
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 50px;
+            background: #0a0e27;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 60px;
+            color: #00ffff;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: linear-gradient(145deg, #1a1e3f, #0e1228);
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 255, 255, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            color: #00ffff;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        /* Newsletter Section */
+        .newsletter {
+            padding: 100px 50px;
+            background: linear-gradient(180deg, #1a1e3f, #0a0e27);
+            text-align: center;
+        }
+
+        .newsletter h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #00ffff;
+        }
+
+        .newsletter p {
+            font-size: 20px;
+            color: #ccc;
+            margin-bottom: 40px;
+        }
+
+        .newsletter-form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            gap: 15px;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 18px 25px;
+            font-size: 16px;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            background: rgba(26, 30, 63, 0.5);
+            color: #fff;
+            border-radius: 30px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .newsletter-input:focus {
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px;
+            text-align: center;
+            background: #05070f;
+            border-top: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        footer p {
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .social-links {
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: #00ffff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 20px;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #fff;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .book-slide {
+                min-width: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 42px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            nav {
+                padding: 15px 20px;
+            }
+
+            .nav-links a {
+                margin: 0 10px;
+                font-size: 14px;
+            }
+
+            .book-slide {
+                min-width: 100%;
+            }
+
+            .carousel-container {
+                padding: 0 20px;
+            }
+
+            .carousel-control {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .library,
+            .features,
+            .newsletter {
+                padding: 60px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">📚 Smart_verse_books</div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#library">Library</a>
+            <a href="#features">Features</a>
+            <a href="#newsletter">Newsletter</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="particles" id="particles"></div>
+        <div class="hero-content">
+            <h1>Your Premium Digital Library</h1>
+            <p>Discover exclusive e-books that transform your digital knowledge</p>
+            <a href="#library" class="cta-button">EXPLORE COLLECTION</a>
+        </div>
+    </section>
+
+    <!-- Library Carousel Section -->
+    <section class="library" id="library">
+        <h2>Featured E-Books Collection</h2>
+        <p class="library-subtitle">Slide through our premium digital books to master the modern world</p>
+
+        <div class="carousel-container">
+            <button class="carousel-control prev" onclick="moveCarousel(-1)">‹</button>
+            <button class="carousel-control next" onclick="moveCarousel(1)">›</button>
+
+            <div class="carousel-wrapper">
+                <div class="carousel" id="carousel">
+                    <!-- Book 1: Digital Mastery -->
+                    <div class="book-slide">
+                        <div class="book-card">
+                            <div class="book-card-inner">
+                                <div class="book-3d">
+                                    <div class="book-cover">
+                                        <div class="book-title">OCEAN<br>ODYSSEY</div>
+                                        <div class="book-subtitle">A journey to the deep</div>
+                                        <img src="e474540f-4ccb-400f-9720-8134ff2d9c36.jpg" alt="the book 1"
+                                            style="max-width: 70%; height: auto;">
+                                    </div>
+                                </div>
+                                <div class="book-info">
+                                    <div class="book-price">
+                                        <span class="old-price">$6</span>
+                                        <span>$4</span>
+                                    </div>
+                                    <a href="#" class="book-button"
+                                        onclick="alert('Demo: Purchase Digital Mastery'); return false;">BUY NOW</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Book 2 -->
+                    <div class="book-slide coming-soon">
+                        <div class="book-card">
+                            <div class="book-card-inner">
+                                <div class="book-3d">
+                                    <div class="book-cover">
+                                        <div class="book-title">CYBER<br>SECURITY<br>MASTERY</div>
+                                        <div class="book-subtitle">Protect Your Digital Life</div>
+                                        <div class="coming-soon-badge">COMING SOON</div>
+                                    </div>
+                                </div>
+                                <div class="book-info">
+                                    <div class="book-price">$6</div>
+                                    <a href="#newsletter" class="book-button">NOTIFY ME</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Book 3 -->
+                    <div class="book-slide coming-soon">
+                        <div class="book-card">
+                            <div class="book-card-inner">
+                                <div class="book-3d">
+                                    <div class="book-cover">
+                                        <div class="book-title">AI<br>PRODUCTIVITY<br>SECRETS</div>
+                                        <div class="book-subtitle">Work Smarter with AI</div>
+                                        <div class="coming-soon-badge">COMING SOON</div>
+                                    </div>
+                                </div>
+                                <div class="book-info">
+                                    <div class="book-price">$5</div>
+                                    <a href="#newsletter" class="book-button">NOTIFY ME</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Book 4 -->
+                    <div class="book-slide coming-soon">
+                        <div class="book-card">
+                            <div class="book-card-inner">
+                                <div class="book-3d">
+                                    <div class="book-cover">
+                                        <div class="book-title">SOCIAL<br>MEDIA<br>DOMINATION</div>
+                                        <div class="book-subtitle">Build Your Online Empire</div>
+                                        <div class="coming-soon-badge">COMING SOON</div>
+                                    </div>
+                                </div>
+                                <div class="book-info">
+                                    <div class="book-price">$4</div>
+                                    <a href="#newsletter" class="book-button">NOTIFY ME</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Book 5 -->
+                    <div class="book-slide coming-soon">
+                        <div class="book-card">
+                            <div class="book-card-inner">
+                                <div class="book-3d">
+                                    <div class="book-cover">
+                                        <div class="book-title">CRYPTO<br>INVESTING<br>GUIDE</div>
+                                        <div class="book-subtitle">Navigate Digital Currency</div>
+                                        <div class="coming-soon-badge">COMING SOON</div>
+                                    </div>
+                                </div>
+                                <div class="book-info">
+                                    <div class="book-price">$7</div>
+                                    <a href="#newsletter" class="book-button">NOTIFY ME</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Book 6 -->
+                    <div class="book-slide coming-soon">
+                        <div class="book-card">
+                            <div class="book-card-inner">
+                                <div class="book-3d">
+                                    <div class="book-cover">
+                                        <div class="book-title">DIGITAL<br>MARKETING<br>PRO</div>
+                                        <div class="book-subtitle">Master Online Growth</div>
+                                        <div class="coming-soon-badge">COMING SOON</div>
+                                    </div>
+                                </div>
+                                <div class="book-info">
+                                    <div class="book-price">$5</div>
+                                    <a href="#newsletter" class="book-button">NOTIFY ME</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Book 7 - Empty Template -->
+                    <div class="book-slide coming-soon">
+                        <div class="book-card">
+                            <div class="book-card-inner">
+                                <div class="book-3d">
+                                    <div class="book-cover">
+                                        <div class="book-title">YOUR<br>NEXT<br>BOOK</div>
+                                        <div class="book-subtitle">Description Here</div>
+                                        <div class="coming-soon-badge">COMING SOON</div>
+                                    </div>
+                                </div>
+                                <div class="book-info">
+                                    <div class="book-price">$8</div>
+                                    <a href="#newsletter" class="book-button">NOTIFY ME</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Book 8 - Empty Template -->
+                    <div class="book-slide coming-soon">
+                        <div class="book-card">
+                            <div class="book-card-inner">
+                                <div class="book-3d">
+                                    <div class="book-cover">
+                                        <div class="book-title">YOUR<br>NEXT<br>BOOK</div>
+                                        <div class="book-subtitle">Description Here</div>
+                                        <div class="coming-soon-badge">COMING SOON</div>
+                                    </div>
+                                </div>
+                                <div class="book-info">
+                                    <div class="book-price">$6</div>
+                                    <a href="#newsletter" class="book-button">NOTIFY ME</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-indicators" id="indicators"></div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2>Why Choose Our Library?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Instant Access</h3>
+                <p>Download immediately after purchase. No waiting, no shipping delays. Start learning right away.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>All Devices</h3>
+                <p>Read on any device - phone, tablet, or computer. Seamless experience across all platforms.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">♾️</div>
+                <h3>Lifetime Updates</h3>
+                <p>Get free updates forever. As content evolves, so does your library at no extra cost.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Expert Authors</h3>
+                <p>Written by industry professionals with real-world experience and proven results.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Money-Back Guarantee</h3>
+                <p>30-day full refund policy. If you're not satisfied, get your money back, no questions asked.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💎</div>
+                <h3>Premium Quality</h3>
+                <p>Professionally designed, edited, and formatted. Only the highest quality content in our library.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter" id="newsletter">
+        <h2>Stay Updated</h2>
+        <p>Get notified when new books are released and receive exclusive discounts</p>
+        <form class="newsletter-form"
+            onsubmit="event.preventDefault(); alert('Thank you for subscribing! This is a demo.');">
+            <input type="email" class="newsletter-input" placeholder="Enter your email address" required>
+            <button type="submit" class="cta-button">SUBSCRIBE</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Digital Library. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#">📘 Facebook</a>
+            <a href="#">🐦 Twitter</a>
+            <a href="#">📸 Instagram</a>
+            <a href="#">💼 LinkedIn</a>
+        </div>
+        <p style="margin-top: 20px;">Privacy Policy | Terms of Service | Contact Us</p>
+    </footer>
+
+    <script>
+        // Create particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.width = Math.random() * 5 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 6 + 's';
+            particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Carousel functionality
+        const carousel = document.getElementById('carousel');
+        const slides = carousel.children;
+        const totalSlides = slides.length;
+        let currentIndex = 0;
+        let slidesPerView = window.innerWidth > 1200 ? 3 : window.innerWidth > 768 ? 2 : 1;
+
+        // Create indicators
+        const indicatorsContainer = document.getElementById('indicators');
+        const totalPages = Math.ceil(totalSlides / slidesPerView);
+        for (let i = 0; i < totalPages; i++) {
+            const indicator = document.createElement('div');
+            indicator.className = 'indicator' + (i === 0 ? ' active' : '');
+            indicator.onclick = () => goToPage(i);
+            indicatorsContainer.appendChild(indicator);
+        }
+
+        function updateCarousel() {
+            const slideWidth = slides[0].offsetWidth;
+            const gap = 40;
+            const offset = currentIndex * (slideWidth + gap);
+            carousel.style.transform = `translateX(-${offset}px)`;
+
+            // Update indicators
+            const indicators = indicatorsContainer.children;
+            const currentPage = Math.floor(currentIndex / slidesPerView);
+            for (let i = 0; i < indicators.length; i++) {
+                indicators[i].classList.toggle('active', i === currentPage);
+            }
+        }
+
+        function moveCarousel(direction) {
+            currentIndex += direction * slidesPerView;
+            if (currentIndex < 0) currentIndex = 0;
+            if (currentIndex >= totalSlides - slidesPerView) currentIndex = totalSlides - slidesPerView;
+            updateCarousel();
+        }
+
+        function goToPage(page) {
+            currentIndex = page * slidesPerView;
+            updateCarousel();
+        }
+
+        // Auto-advance carousel
+        setInterval(() => {
+            if (currentIndex >= totalSlides - slidesPerView) {
+                currentIndex = 0;
+            } else {
+                currentIndex += slidesPerView;
+            }
+            updateCarousel();
+        }, 6000);
+
+        // Update on resize
+        window.addEventListener('resize', () => {
+            slidesPerView = window.innerWidth > 1200 ? 3 : window.innerWidth > 768 ? 2 : 1;
+            currentIndex = 0;
+            updateCarousel();
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+
+        document.
